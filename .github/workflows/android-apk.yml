@@ -1,3 +1,4 @@
+
 name: Build V-Music APK
 
 on:
@@ -8,28 +9,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
 
       - name: Extract project
         run: unzip V-Music_Flutter_Starter.zip -d source
 
-      - name: Build project
-        working-directory: source/v_music
-        run: |
-          flutter create --platforms=android,ios --org com.vmusic .
-          flutter pub get
-          flutter build apk --release
+      - name: Generate platforms
+        working-directory: source
+        run: flutter create --platforms=android,ios --org com.vmusic .
 
-      - uses: actions/upload-artifact@v4
+      - name: Install dependencies
+        working-directory: source
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: source
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: V-Music-APK
-          path: source/v_music/build/app/outputs/flutter-apk/app-release.apk
+          path: source/build/app/outputs/flutter-apk/app-release.apk
+          
