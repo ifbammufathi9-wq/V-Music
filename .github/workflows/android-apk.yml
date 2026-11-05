@@ -27,20 +27,20 @@ jobs:
         run: unzip V-Music_Flutter_Starter.zip -d source
 
       - name: Generate platforms
-        working-directory: source
+        working-directory: source/v_music_starter
         run: flutter create --platforms=android,ios --org com.vmusic .
 
       - name: Install dependencies
-        working-directory: source
+        working-directory: source/v_music_starter
         run: flutter pub get
 
       - name: Build APK
-        working-directory: source
+        working-directory: source/v_music_starter
         run: flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: V-Music-APK
-          path: source/build/app/outputs/flutter-apk/app-release.apk
+          path: source/v_music_starter/build/app/outputs/flutter-apk/app-release.apk
           
